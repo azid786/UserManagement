@@ -19,3 +19,6 @@ userCard
 name
 email
 phone is implemented here
+
+userCard implemented
+UserForm also implemented
