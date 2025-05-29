@@ -1,23 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import "./App.css";
+import UserCard from "./UserCard";
+import SearchBar from "./SearchBar";
+import UserForm from "./UserForm";
 
 function App() {
+  const [users, setUsers] = useState([]);
+  const [localUsers, setLocalUsers] = useState([]);
+  const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    fetch("https://jsonplaceholder.typicode.com/users")
+      .then((res) => res.json())
+      .then((data) => setUsers(data));
+  }, []);
+
+  const handleAddUser = (user) => {
+    setLocalUsers([user, ...localUsers]);
+  };
+
+  const filtered = [...localUsers, ...users].filter((u) =>
+    u.name.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container">
+      <h1>User Management</h1>
+      <SearchBar value={search} onChange={setSearch} />
+      <div className="grid">
+        {filtered.map((user) => (
+          <UserCard key={user.id} user={user} />
+        ))}
+      </div>
+      <UserForm onAddUser={handleAddUser} />
     </div>
   );
 }
