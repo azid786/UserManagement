@@ -22,3 +22,5 @@ phone is implemented here
 
 userCard implemented
 UserForm also implemented
+
+footer also implemented
